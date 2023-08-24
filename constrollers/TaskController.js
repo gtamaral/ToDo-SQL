@@ -24,8 +24,12 @@ module.exports = class TaskController {
     const id = req.params.id
 
     const task = await Task.findOne({where: {id: id}, raw: true})
+      .then((data) => {
+        res.render('tasks/edit', {task: data})
+      })
+      .catch((err) => console.log(err))
 
-    res.render('tasks/edit', {task})
+    // res.render('tasks/edit', {task})
   }
 
   static async updateTaskPost(req,res) {
@@ -48,6 +52,8 @@ module.exports = class TaskController {
     const tasks = await Task.findAll({raw: true})
 
     res.render('tasks/all', {tasks})
+    
+
   }
 
   static async toggleTaskStatus(req,res) {
